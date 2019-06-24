@@ -1,0 +1,21 @@
+{
+    "name": "alexstack/google-recaptcha-to-any-form",
+    "description": "Add Google Recaptcha to any form",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex",
+            "email": "alex@10168.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.6"
+      },
+      "autoload": {
+        "psr-4": {
+          "AlexStack\\GoogleRecaptchaToAnyForm\\": "src/AlexStack/GoogleRecaptchaToAnyForm"
+        }
+      }      
+}
