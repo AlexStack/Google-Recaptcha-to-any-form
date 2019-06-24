@@ -8,7 +8,7 @@ namespace AlexStack\GoogleRecaptchaToAnyForm;
 class GoogleRecaptchaToAnyForm
 {
 
-    public function displayGoogleRecaptcha($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $please_tick_msg="Please tick the I'm not robot checkbox")    {
+    public static function displayGoogleRecaptcha($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $please_tick_msg="Please tick the I'm not robot checkbox")    {
         $debug_alert = ($debug=='no_debug') ? 'false' : 'true';
         $str = <<<EOF
         <!-- Start of the Google Recaptcha code -->
@@ -44,10 +44,10 @@ EOF;
      * @param [string] $break_msg, if set, pop up as an javascript alert and exit
      * @return true or false
      */
-    public function checkGoogleRecaptcha($secret_key, $break_msg = null)  {
+    public static function checkGoogleRecaptcha($secret_key, $break_msg = null)  {
         $valid = false;
         if ( isset($_POST['g-recaptcha-response']) && strlen($_POST['g-recaptcha-response'])>20 ) {
-            $valid = $this->getGoogleRecaptchaResult($secret_key, $_POST['g-recaptcha-response']);
+            $valid = Self::getGoogleRecaptchaResult($secret_key, $_POST['g-recaptcha-response']);
         }
         
         if ( !$valid && $break_msg){
@@ -67,7 +67,7 @@ EOF;
      * @param [type] $g_recaptcha_response
      * @return void
      */
-    public function getGoogleRecaptchaResult($secret_key, $g_recaptcha_response)
+    public static function getGoogleRecaptchaResult($secret_key, $g_recaptcha_response)
     {
         $google_recaptcha_uri = 'https://www.google.com/recaptcha/api/siteverify';
 
