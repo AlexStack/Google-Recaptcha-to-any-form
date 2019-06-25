@@ -1,5 +1,5 @@
 # Google Recaptcha to any form
-- It can display a Google Recaptcha v2 in any custom form
+- It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection of your existing code.
 - How to install
 ```php
     composer require alexstack/google-recaptcha-to-any-form dev-master
