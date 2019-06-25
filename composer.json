@@ -1,9 +1,12 @@
 {
     "name": "alexstack/google-recaptcha-to-any-form",
-    "description": "Add Google Recaptcha to any form",
+    "description": "It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Laravel & Wordpress & other CMS. ",
+    "homepage": "https://github.com/AlexStack/Google-Recaptcha-to-any-form",
     "type": "library",
     "keywords": [
       "silverstripe",
+      "silverstripe3",
+      "silverstripe4",
       "google recaptcha",
       "recaptcha",
       "google recaptcha v2"
@@ -15,6 +18,9 @@
             "email": "alex@10168.com"
         }
     ],
+    "support": {
+      "issues": "https://github.com/AlexStack/Google-Recaptcha-to-any-form/issues"
+    },
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.0"

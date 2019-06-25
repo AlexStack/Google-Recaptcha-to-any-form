@@ -1,6 +1,6 @@
 # Google Recaptcha to any form
 
-- It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection of your existing code.
+- It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS. 
 - How to install
 
 ```php
