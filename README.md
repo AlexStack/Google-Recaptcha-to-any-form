@@ -1,13 +1,38 @@
 # Google Recaptcha to any form
 
 - It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
-- How to install
+
+# Basic example codes
+
+- Display Google Recaptcha after a Form_Field_ID:
+
+```php
+GoogleRecaptcha::show('SiteKey', 'Form_Field_ID');
+```
+
+- Verify it in the backend php:
+
+```php
+GoogleRecaptcha::verify('SecretKey');
+```
+
+# How to install
 
 ```php
 composer require alexstack/google-recaptcha-to-any-form dev-master
 ```
 
-# How to display it on frontend page?
+# Contents
+
+- [x] [How to display it on frontend page](#frontend)
+- [x] [How to verify it in the backend script](#backend)
+- [x] [Usage example for SilverStripe 4.x/3.x](#silverstripe)
+- [x] [Usage example for Laravel](#laravel)
+- [x] [Usage example for Wordpress](#wordpress)
+
+# <a name="frontend"></a>How to display it on frontend page?
+
+![How to display it on frontend page](https://developers.google.com/recaptcha/images/newCaptchaAnchor.gif "Google Recaptcha")
 
 - Set up your Google Recaptcha account for you website and get the site key and secret key
 - Import the GoogleRecaptcha class:
@@ -36,7 +61,7 @@ show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $e
 
 - If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
 
-# How to verify it in the backend script
+# <a name="backend"></a>How to verify it in the backend script
 
 - Import the GoogleRecaptcha class:
 
@@ -59,9 +84,9 @@ GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation 
 verify($secret_key, $break_msg = null)
 ```
 
-# Usage example for SilverStripe 4.x/3.x
+# <a name="silverstripe"></a>Usage example for SilverStripe 4.x/3.x
 
-- Include it in your controller php file first:
+- Import the GoogleRecaptcha class:
 
 ```php
 use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
@@ -87,7 +112,7 @@ $showGoogleRecaptcha.RAW
 GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
 ```
 
-# Usage example for Laravel 5.x custom login form
+# <a name="laravel"></a>Usage example for Laravel 5.x custom login form
 
 - Include it in your LoginController.php file first:
 
@@ -126,7 +151,7 @@ protected function validateLogin(Request $request)
 }
 ```
 
-# Usage example for Wordpress custom form
+# <a name="wordpress"></a>Usage example for Wordpress custom form
 
 - Include it in your custom form template php file first. Note: Change the correct vendor path for require_once:
 
