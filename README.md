@@ -34,7 +34,7 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
 show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox");
 ```
 
-- You can use your own code to display the recaptcha if you want. Just make sure the form action method is POST, then you can use the verify() in your backend script.
+- If you do not want to use the show(), You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
 
 # How to verify it in the backend script
 
