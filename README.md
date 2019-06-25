@@ -8,12 +8,12 @@
 # Usage example for SilverStripe 4.x/3.x
 - Include it in your controller php file first:
 ```php
-use AlexStack\GoogleRecaptchaToAnyForm\GoogleRecaptcha;
+use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 - Create a function to display the recapacha in your controller. eg.:
 ```php
     public function showGoogleRecaptcha()   {
-        return GoogleRecaptcha::show($SiteConfig.GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'debug');
+        return GoogleRecaptcha::show('6LdRe6oUAAAAAPgwJR1zzh0n1aDD6rCB9fZ7WP4o', 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
     }
 ```
 - Display the recaptcha in the fontend.ss form, add below code to the end of a fontend.ss template. eg. :

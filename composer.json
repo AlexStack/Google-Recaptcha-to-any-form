@@ -15,7 +15,7 @@
       },
       "autoload": {
         "psr-4": {
-          "AlexStack\\GoogleRecaptchaToAnyForm\\": "src/AlexStack/GoogleRecaptchaToAnyForm"
+          "GoogleRecaptchaToAnyForm\\": "src/AlexStack/GoogleRecaptchaToAnyForm"
         }
       }      
 }

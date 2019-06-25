@@ -4,7 +4,7 @@
  * 2019-06-25
  */
 
-namespace AlexStack\GoogleRecaptchaToAnyForm;
+namespace GoogleRecaptchaToAnyForm;
 
 class GoogleRecaptcha
 {
