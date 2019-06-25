@@ -34,7 +34,7 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
 show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox");
 ```
 
-- If you do not want to use the show(), You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
+- If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
 
 # How to verify it in the backend script
 
@@ -67,7 +67,7 @@ verify($secret_key, $break_msg = null)
 use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 
-- Create a function to display the recapacha in your controller. eg.:
+- Create a function to display the recaptcha in your controller. eg.:
 
 ```php
     public function showGoogleRecaptcha()   {
@@ -85,6 +85,46 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 
 ```php
     GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
+```
+
+# Usage example for Laravel 5.x custom login form
+
+- Include it in your LoginController.php file first:
+
+```php
+use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
+```
+
+- Create a function to display the recaptcha in your LoginController.php eg.:
+
+```php
+
+    public function showLoginForm()
+    {
+        $showRecaptcha = GoogleRecaptcha::show('site_key', 'password', 'no_debug', 'mt-4 mb-3 col-md-6 offset-md-4', 'Please tick the reCAPTCHA checkbox first!');
+        return view('auth.login', compact('showRecaptcha'));
+    }
+```
+
+- Display the recaptcha in the auth/login.blade.php, add below code to the end of the auth/login.blade.php template. eg. :
+
+```php
+{!! $showRecaptcha !!}
+```
+
+- Verify the recaptcha in the LoginController.php file, add below code for validateLogin. eg.:
+
+```php
+protected function validateLogin(Request $request)
+{
+
+    GoogleRecaptcha::verify('secret_key', 'Google Recaptcha Validation Failed!!');
+
+    $request->validate([
+        $this->username() => 'required|string',
+        'password' => 'required|string',
+    ]);
+}
 ```
 
 # License
