@@ -24,7 +24,7 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
 
 - Description for above code:
   - '\$GoogleRecaptchaSiteKey': The Google Recaptcha Site Key of your website. You can directly put site key here or a variable or from database.
-  - 'Form_ContactForm_Message': Form field id, via html code: ... id="Form_ContactForm_Message" ...
+  - 'Form_ContactForm_Message': Form field id, via html code: ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
   - 'no_debug': Change to debug and not tick the I'm not a robot checkbox will continue submit the form, then you will see the failed message.
   - 'mt-4 mb-1': Extra css class name for the Google Recaptcha area.
   - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox.
@@ -34,7 +34,9 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
 show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox");
 ```
 
-# How to verify it on backend script
+- You can use your own code to display the recaptcha if you want. Just make sure the form action method is POST, then you can use the verify() in your backend script.
+
+# How to verify it in the backend script
 
 - Import the GoogleRecaptcha class:
 
@@ -42,7 +44,7 @@ show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $e
 use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 
-- Put below php code in your frontend template/page.
+- Put below php code into the form-submitted-method() of your backend php file.
 
 ```php
 GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
