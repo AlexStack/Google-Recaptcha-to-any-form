@@ -1,5 +1,8 @@
 # Google Recaptcha to any form
-
+- How to install
+```php
+    composer require alexstack/google-recaptcha-to-any-form dev-master
+```
 
 # Usage example for SilverStripe 4.x/3.x
 - Include it in your controller php file first:
@@ -18,5 +21,5 @@ use AlexStack\GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 - Verify the recaptcha in the controller php file, add below code to the formAction function of your controller. eg.:
 ```php
-    GoogleRecaptcha::verify($config->GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed! Please refresh the page and re-submit the form!');
+    GoogleRecaptcha::verify($config->GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
 ```
