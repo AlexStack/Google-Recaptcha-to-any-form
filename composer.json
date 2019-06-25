@@ -2,6 +2,12 @@
     "name": "alexstack/google-recaptcha-to-any-form",
     "description": "Add Google Recaptcha to any form",
     "type": "library",
+    "keywords": [
+      "silverstripe",
+      "google recaptcha",
+      "recaptcha",
+      "google recaptcha v2"
+    ],
     "license": "MIT",
     "authors": [
         {
