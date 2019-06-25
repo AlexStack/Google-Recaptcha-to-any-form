@@ -13,7 +13,7 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 - Create a function to display the recapacha in your controller. eg.:
 ```php
     public function showGoogleRecaptcha()   {
-        return GoogleRecaptcha::show('6LdRe6oUAAAAAPgwJR1zzh0n1aDD6rCB9fZ7WP4o', 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
+        return GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
     }
 ```
 - Display the recaptcha in the fontend.ss form, add below code to the end of a fontend.ss template. eg. :
@@ -22,7 +22,7 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 - Verify the recaptcha in the controller php file, add below code to the formAction function of your controller. eg.:
 ```php
-    GoogleRecaptcha::verify($config->GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
+    GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
 ```
 
 # License
