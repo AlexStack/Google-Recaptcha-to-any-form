@@ -1,14 +1,15 @@
 <?php
 /**
  * Created by Alex Zeng
+ * 2019-06-25
  */
 
 namespace AlexStack\GoogleRecaptchaToAnyForm;
 
-class GoogleRecaptchaToAnyForm
+class GoogleRecaptcha
 {
 
-    public static function displayGoogleRecaptcha($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $please_tick_msg="Please tick the I'm not robot checkbox")    {
+    public static function show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $please_tick_msg="Please tick the I'm not robot checkbox")    {
         $debug_alert = ($debug=='no_debug') ? 'false' : 'true';
         $str = <<<EOF
         <!-- Start of the Google Recaptcha code -->
@@ -38,16 +39,16 @@ EOF;
     }
 
     /**
-     * checkGoogleRecaptcha function
+     * verify function
      *
      * @param [string] $secret_key
      * @param [string] $break_msg, if set, pop up as an javascript alert and exit
      * @return true or false
      */
-    public static function checkGoogleRecaptcha($secret_key, $break_msg = null)  {
+    public static function verify($secret_key, $break_msg = null)  {
         $valid = false;
         if ( isset($_POST['g-recaptcha-response']) && strlen($_POST['g-recaptcha-response'])>20 ) {
-            $valid = Self::getGoogleRecaptchaResult($secret_key, $_POST['g-recaptcha-response']);
+            $valid = Self::result($secret_key, $_POST['g-recaptcha-response']);
         }
         
         if ( !$valid && $break_msg){
@@ -61,13 +62,13 @@ EOF;
     }
 
     /**
-     * getGoogleRecaptchaResult function
+     * result function
      *
      * @param [type] $secret_key
      * @param [type] $g_recaptcha_response
      * @return void
      */
-    public static function getGoogleRecaptchaResult($secret_key, $g_recaptcha_response)
+    public static function result($secret_key, $g_recaptcha_response)
     {
         $google_recaptcha_uri = 'https://www.google.com/recaptcha/api/siteverify';
 
