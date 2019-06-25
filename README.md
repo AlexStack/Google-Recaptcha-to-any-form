@@ -1,10 +1,10 @@
 # Google Recaptcha to any form
 
-- It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS. 
+- It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
 - How to install
 
 ```php
-    composer require alexstack/google-recaptcha-to-any-form dev-master
+composer require alexstack/google-recaptcha-to-any-form dev-master
 ```
 
 # How to display it on frontend page?
@@ -70,21 +70,21 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 - Create a function to display the recaptcha in your controller. eg.:
 
 ```php
-    public function showGoogleRecaptcha()   {
-        return GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
-    }
+public function showGoogleRecaptcha()   {
+    return GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
+}
 ```
 
 - Display the recaptcha in the frontend.ss form, add below code to the end of a frontend.ss template. eg. :
 
 ```php
-    $showGoogleRecaptcha.RAW
+$showGoogleRecaptcha.RAW
 ```
 
 - Verify the recaptcha in the controller php file, add below code to the formAction function of your controller. eg.:
 
 ```php
-    GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
+GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation Failed!!');
 ```
 
 # Usage example for Laravel 5.x custom login form
@@ -98,12 +98,11 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 - Create a function to display the recaptcha in your LoginController.php eg.:
 
 ```php
-
-    public function showLoginForm()
-    {
-        $showRecaptcha = GoogleRecaptcha::show('site_key', 'password', 'no_debug', 'mt-4 mb-3 col-md-6 offset-md-4', 'Please tick the reCAPTCHA checkbox first!');
-        return view('auth.login', compact('showRecaptcha'));
-    }
+public function showLoginForm()
+{
+    $showRecaptcha = GoogleRecaptcha::show('site_key', 'password', 'no_debug', 'mt-4 mb-3 col-md-6 offset-md-4', 'Please tick the reCAPTCHA checkbox first!');
+    return view('auth.login', compact('showRecaptcha'));
+}
 ```
 
 - Display the recaptcha in the auth/login.blade.php, add below code to the end of the auth/login.blade.php template. eg. :
@@ -125,6 +124,30 @@ protected function validateLogin(Request $request)
         'password' => 'required|string',
     ]);
 }
+```
+
+# Usage example for Wordpress custom form
+
+- Include it in your custom form template php file first. Note: Change the correct vendor path for require_once:
+
+```php
+require_once(__DIR__ . '/../../../../vendor/autoload.php');
+use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
+```
+
+- Display the recaptcha in the form template. eg. :
+
+```php
+echo GoogleRecaptcha::show('site_key', 'input_2_3', 'no_debug', 'mt-4 mb-3 col-md-6 offset-md-4', 'Please tick the reCAPTCHA checkbox first!');
+```
+
+- Verify the recaptcha in the handle form submission method . eg.:
+
+```php
+require_once(__DIR__ . '/../../vendor/autoload.php');
+use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
+
+GoogleRecaptcha::verify('secret_key', 'Google Recaptcha Validation Failed!!');
 ```
 
 # License
