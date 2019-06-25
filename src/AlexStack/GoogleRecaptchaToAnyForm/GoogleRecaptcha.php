@@ -9,7 +9,7 @@ namespace AlexStack\GoogleRecaptchaToAnyForm;
 class GoogleRecaptcha
 {
 
-    public static function show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $please_tick_msg="Please tick the I'm not robot checkbox")    {
+    public static function show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox")    {
         $debug_alert = ($debug=='no_debug') ? 'false' : 'true';
         $str = <<<EOF
         <!-- Start of the Google Recaptcha code -->
@@ -19,7 +19,7 @@ class GoogleRecaptcha
         <script>
         
         // Display google recaptcha
-        $('#$after_field_id').parent().after('<div class="g-recaptcha mt-4 mb-5" data-sitekey="$site_key"></div> ');
+        $('#$after_field_id').parent().after('<div class="g-recaptcha $extra_class" data-sitekey="$site_key"></div> ');
         
         // Validate google recaptcha before submit the form
         $('#$after_field_id').closest('form').submit(function(e) {
