@@ -120,7 +120,9 @@ class GoogleRecaptcha
                 //recaptcha failed validation
                 if(response.length == 0) {
                     alert("$please_tick_msg");
-                    e.preventDefault();
+                    if (!$debug_alert){
+                        e.preventDefault();
+                    }
                     return $debug_alert;
                 }
                 return true;
