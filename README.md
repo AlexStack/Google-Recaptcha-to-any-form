@@ -4,13 +4,13 @@
 
 # Basic example codes
 
-- Display Google Recaptcha v2 after a Form_Field_ID:
+- Display Google Recaptcha v2 or v3 after a Form_Field_ID:
 
 ```php
-// For recaptcha v2
+// For Google recaptcha v2
 GoogleRecaptcha::show('SiteKey', 'Form_Field_ID');
 
-// For recaptcha v3
+// For Google recaptcha v3
 // GoogleRecaptcha::showV3('SiteKey', 'Form_Field_ID');
 ```
 
@@ -23,7 +23,7 @@ GoogleRecaptcha::verify('SecretKey');
 # How to install
 
 ```php
-composer require alexstack/google-recaptcha-to-any-form dev-master
+composer require alexstack/google-recaptcha-to-any-form
 ```
 
 # Contents
@@ -53,7 +53,7 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
 
 - Description for above code:
   - '\$GoogleRecaptchaSiteKey': The Google Recaptcha Site Key of your website. You can directly put site key here or a variable or from database.
-  - 'Form_ContactForm_Message': Form field id, via html code: ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
+  - 'Form_ContactForm_Message': Form_Field_ID, via html code: ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
   - 'no_debug': Change to debug and not tick the I'm not a robot checkbox will continue submit the form, then you will see the failed message.
   - 'mt-4 mb-1': Extra css class name for the Google Recaptcha area.
   - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox. Tips: You can change this value to "v3", it will automatically switch to use Google Recaptcha v3
@@ -67,7 +67,7 @@ show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $e
 ```php
 GoogleRecaptcha::showV3($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug');
 ```
-    - Our Google Recaptcha v3 will automatically execute and get response value after the page load 10 seconds or the Form field id(eg. Form_ContactForm_Message) was clicked.
+    - Our Google Recaptcha v3 will automatically execute and get response value after the page load 10 seconds or the Form_Field_ID(eg. Form_ContactForm_Message) was clicked.
 
 - If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
 
