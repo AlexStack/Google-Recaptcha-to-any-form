@@ -1,13 +1,17 @@
-# Google Recaptcha to any form
+# Google Recaptcha v2 or v3 to any form
 
-- It can display a Google Recaptcha v2 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
+- It can display a Google Recaptcha v2 or v3 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
 
 # Basic example codes
 
-- Display Google Recaptcha after a Form_Field_ID:
+- Display Google Recaptcha v2 after a Form_Field_ID:
 
 ```php
+// For recaptcha v2
 GoogleRecaptcha::show('SiteKey', 'Form_Field_ID');
+
+// For recaptcha v3
+// GoogleRecaptcha::showV3('SiteKey', 'Form_Field_ID');
 ```
 
 - Verify it in the backend php:
@@ -34,14 +38,14 @@ composer require alexstack/google-recaptcha-to-any-form dev-master
 
 ![How to display it on frontend page](https://developers.google.com/recaptcha/images/newCaptchaAnchor.gif "Google Recaptcha")
 
-- Set up your Google Recaptcha account for you website and get the site key and secret key
+- Set up your Google Recaptcha v2 or v3 account for you website and get the site key and secret key
 - Import the GoogleRecaptcha class:
 
 ```php
 use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 
-- Put below php code in your frontend template/page.
+- Put below php code in your frontend template/page for Google Recaptcha v2.
 
 ```php
 GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
@@ -52,12 +56,18 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
   - 'Form_ContactForm_Message': Form field id, via html code: ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
   - 'no_debug': Change to debug and not tick the I'm not a robot checkbox will continue submit the form, then you will see the failed message.
   - 'mt-4 mb-1': Extra css class name for the Google Recaptcha area.
-  - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox.
+  - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox. Tips: You can change this value to "v3", it will automatically switch to use Google Recaptcha v3
 - Default value of the parameters of the show() method
 
 ```php
 show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox");
 ```
+
+- Put below php code in your frontend template/page for Google Recaptcha v3
+```php
+GoogleRecaptcha::showV3($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug');
+```
+    - Our Google Recaptcha v3 will automatically execute and get response value after the page load 10 seconds or the Form field id(eg. Form_ContactForm_Message) was clicked.
 
 - If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
 

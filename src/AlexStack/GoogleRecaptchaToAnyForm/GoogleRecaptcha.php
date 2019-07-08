@@ -89,9 +89,12 @@ class GoogleRecaptcha
      */
     public static function show($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4", $please_tick_msg = "Please tick the I'm not robot checkbox")
     {
+        if ( $please_tick_msg == 'v3'){
+            return Self::showV3($site_key, $after_field_id, $debug);
+        }
         $debug_alert = ($debug == 'no_debug') ? 'false' : 'true';
         $str = <<<EOF
-        <!-- Start of the Google Recaptcha code -->
+        <!-- Start of the Google Recaptcha v2 code -->
  
         <script src='https://www.google.com/recaptcha/api.js'></script>
         <script>
@@ -129,6 +132,57 @@ class GoogleRecaptcha
             });
  
         </script>
+        <!-- End of the Google Recaptcha code -->
+EOF;
+        return $str;
+    }
+
+
+    /**
+     * show recaptcha v3 function without jQuery
+     *
+     * @param string $site_key
+     * @param string $after_field_id
+     * @param string $debug
+     * @param string $extra_class
+     * @param string $please_tick_msg
+     * @return void
+     */
+    public static function showV3($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug')
+    {
+        $debug_mode = ($debug == 'no_debug') ? '' : 'return false; // debug mode is on ';
+        $str = <<<EOF
+        <!-- Start of the Google Recaptcha v3 code -->
+ 
+        <script src="https://www.google.com/recaptcha/api.js?render=$site_key"></script>
+
+
+        <script>
+ 
+            // Display google recaptcha
+            var alexEL = document.getElementById('$after_field_id');
+            alexEL.parentNode.insertAdjacentHTML('afterend', '<input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
+
+            function alexGetRecaptchaValue(id) {
+                $debug_mode
+
+                if ( document.getElementById(id).value == '' ) {
+                    grecaptcha.execute('$site_key', {action: 'CustomContactUsForm'}).then(function (token) {
+                        document.getElementById(id).value = token;
+                    });
+                }
+            }
+
+            setTimeout('alexGetRecaptchaValue("CustomContactUsForm-recaptcha")', 10000);
+ 
+            grecaptcha.ready(function() {
+                alexEL.addEventListener('click',function(e){
+                    alexGetRecaptchaValue("CustomContactUsForm-recaptcha");
+                });
+            });   
+
+        </script>
+
         <!-- End of the Google Recaptcha code -->
 EOF;
         return $str;
