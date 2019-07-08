@@ -16,11 +16,11 @@ class GoogleRecaptcha
      * @param [string] $break_msg, if set, pop up as an javascript alert and exit
      * @return true or false
      */
-    public static function verify($secret_key, $break_msg = null)
+    public static function verify($secret_key, $break_msg = null, $recaptcha_score = 0.5)
     {
         $valid = false;
         if (isset($_POST['g-recaptcha-response']) && strlen($_POST['g-recaptcha-response']) > 20) {
-            $valid = Self::result($secret_key, $_POST['g-recaptcha-response']);
+            $valid = Self::result($secret_key, $_POST['g-recaptcha-response'], $recaptcha_score);
         }
 
         if (!$valid && $break_msg) {
@@ -40,7 +40,7 @@ class GoogleRecaptcha
      * @param [type] $g_recaptcha_response
      * @return void
      */
-    public static function result($secret_key, $g_recaptcha_response)
+    public static function result($secret_key, $g_recaptcha_response, $recaptcha_score=0.5)
     {
         $google_recaptcha_uri = 'https://www.google.com/recaptcha/api/siteverify';
 
@@ -69,8 +69,11 @@ class GoogleRecaptcha
 
         $response = json_decode($rs);
 
+        //var_dump($response); exit();// un-comment for debug
+
         if (!$response || $response->success == false) {
-            //var_dump($response); // un-comment for debug
+            return false;
+        } else if ( isset($response->score) && $response->score < $recaptcha_score ) {
             return false;
         } else {
             return true;

@@ -11,7 +11,7 @@
 GoogleRecaptcha::show('SiteKey', 'Form_Field_ID');
 
 // For Google recaptcha v3
-// GoogleRecaptcha::showV3('SiteKey', 'Form_Field_ID');
+GoogleRecaptcha::showV3('SiteKey', 'Form_Field_ID');
 ```
 
 - Verify it in the backend php:
@@ -45,7 +45,7 @@ composer require alexstack/google-recaptcha-to-any-form
 use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```
 
-- Put below php code in your frontend template/page for Google Recaptcha v2.
+- Put below php code in your frontend template/page for **Google Recaptcha v2**.
 
 ```php
 GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
@@ -63,11 +63,17 @@ GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_d
 show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox");
 ```
 
-- Put below php code in your frontend template/page for Google Recaptcha v3
+- Put below php code in your frontend template/page for **Google Recaptcha v3**
 ```php
-GoogleRecaptcha::showV3($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug');
+GoogleRecaptcha::showV3($GoogleRecaptchaSiteKey, 'Form_Field_ID', 'no_debug');
 ```
-    - Our Google Recaptcha v3 will automatically execute and get response value after the page load 10 seconds or the Form_Field_ID(eg. Form_ContactForm_Message) was clicked.
+- Our Google Recaptcha v3 will automatically get g-recaptcha-response value after the page load 10 seconds or the Form_Field_ID(eg. Form_ContactForm_Message) was clicked.
+- 'no_debug': Change to "debug" will always submit an empty g-recaptcha-response to the backend.
+- By default recaptcha v3 verify score < 0.5 as a failed result. You can set the score if you want a different value. eg.
+
+```php
+GoogleRecaptcha::verify($SecretKey, 'Google Recaptcha Validation Failed!!', 0.36);
+```
 
 - If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
 
@@ -91,7 +97,7 @@ GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation 
 - Default value of the parameters of the verify() method
 
 ```php
-verify($secret_key, $break_msg = null)
+verify($secret_key, $break_msg = null, $recaptcha_score=0.5)
 ```
 
 # <a name="silverstripe"></a>Usage example for SilverStripe 4.x/3.x
