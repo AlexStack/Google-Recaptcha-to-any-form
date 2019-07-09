@@ -95,6 +95,11 @@ class GoogleRecaptcha
         if ( $please_tick_msg == 'v3'){
             return Self::showV3($site_key, $after_field_id, $debug, $extra_class);
         }
+
+        if ( strpos($extra_class, 'invisible') !== false  ){
+            return Self::showInvisible($site_key, $after_field_id, $debug, $extra_class);
+        }
+
         $debug_alert = ($debug == 'no_debug') ? 'false' : 'true';
         $str = <<<EOF
         <!-- Start of the Google Recaptcha v2 code -->
@@ -103,36 +108,37 @@ class GoogleRecaptcha
         <script>
  
             // Display google recaptcha
-            var alexEL = document.getElementById('$after_field_id');
-            alexEL.parentNode.insertAdjacentHTML('afterend', '<div class="g-recaptcha $extra_class" data-sitekey="$site_key"></div>');
-
             function alexFindClosestNode(el, selector) {
-            const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+                const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
 
-            while (el) {
-                if (matchesSelector.call(el, selector)) {
-                return el;
-                } else {
-                el = el.parentElement;
-                }
-            }
-            return null;
-            }
-
-            // Validate google recaptcha before submit the form
-
-            alexFindClosestNode(alexEL,'form').addEventListener('submit',function(e){
-                var response = grecaptcha.getResponse();
-                //recaptcha failed validation
-                if(response.length == 0) {
-                    alert("$please_tick_msg");
-                    if (!$debug_alert){
-                        e.preventDefault();
+                while (el) {
+                    if (matchesSelector.call(el, selector)) {
+                    return el;
+                    } else {
+                    el = el.parentElement;
                     }
-                    return $debug_alert;
                 }
-                return true;
-            });
+                return null;
+            }
+
+            var alexEL = document.getElementById('$after_field_id');
+            if ( alexEL )   {
+                alexEL.parentNode.insertAdjacentHTML('afterend', '<div class="g-recaptcha $extra_class" data-sitekey="$site_key"></div>');
+
+                // Validate google recaptcha before submit the form
+                alexFindClosestNode(alexEL,'form').addEventListener('submit',function(e){
+                    var response = grecaptcha.getResponse();
+                    //recaptcha failed validation
+                    if(response.length == 0) {
+                        alert("$please_tick_msg");
+                        if (!$debug_alert){
+                            e.preventDefault();
+                        }
+                        return $debug_alert;
+                    }
+                    return true;
+                });
+            }
  
         </script>
         <!-- End of the Google Recaptcha code -->
@@ -176,14 +182,16 @@ EOF;
  
             // Display google recaptcha v3
             var alexEL = document.getElementById('$after_field_id');
-            alexEL.parentNode.insertAdjacentHTML('afterend', '<div id="CustomContactUsForm-inline-badge" class="inline-badge-div $extra_class"></div><input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
+            if ( alexEL )   {
+                alexEL.parentNode.insertAdjacentHTML('afterend', '<div id="CustomContactUsForm-inline-badge" class="inline-badge-div $extra_class"></div><input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
+            }
 
             function alexGetRecaptchaValue(id) {
                 $debug_mode
                 if ( typeof(id)=='undefined' )  {
                     id = 'CustomContactUsForm-recaptcha';
                 }
-                if ( document.getElementById(id).value == '' ) {
+                if ( document.getElementById(id) && document.getElementById(id).value == '' ) {
 
                     $recaptcha_client
 
@@ -201,9 +209,11 @@ EOF;
             setTimeout('alexGetRecaptchaValue("CustomContactUsForm-recaptcha")', 10000);
  
             function alexRecaptchaReadyCallback() {
-                alexEL.addEventListener('click',function(e){
-                    alexGetRecaptchaValue("CustomContactUsForm-recaptcha");
-                });
+                if ( alexEL )   {
+                    alexEL.addEventListener('click',function(e){
+                        alexGetRecaptchaValue("CustomContactUsForm-recaptcha");
+                    });
+                }
             }  
 
         </script>
@@ -213,6 +223,57 @@ EOF;
         return $str;
     }
 
+
+
+    /**
+     * show recaptcha Invisible function without jQuery
+     *
+     * @param string $site_key
+     * @param string $after_field_id
+     * @param string $debug
+     * @param string $extra_class
+     * @param string $please_tick_msg
+     * @return void
+     */
+    public static function showInvisible($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4")
+    {
+        $debug_mode = ($debug == 'no_debug') ? '' : 'return false; // debug mode is on ';
+
+        $str = <<<EOF
+        <!-- Start of the Google Recaptcha Invisible code -->
+ 
+        <script src="https://www.google.com/recaptcha/api.js?onload=alexRecaptchaReadyCallback" async defer></script>
+
+
+        <script>
+ 
+            // Display google recaptcha Invisible
+            var alexEL = document.getElementById('$after_field_id');
+            if ( alexEL )   {
+                alexEL.parentNode.insertAdjacentHTML('afterend', '<div class="g-recaptcha $extra_class" data-sitekey="$site_key" data-callback="alexGetRecaptchaValue" data-size="invisible"></div><input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
+            }
+
+            function alexGetRecaptchaValue(token) {
+                $debug_mode
+
+                if ( document.getElementById('CustomContactUsForm-recaptcha').value == '' ) {
+                    document.getElementById('CustomContactUsForm-recaptcha').value = token;
+                }
+
+            }
+ 
+            function alexRecaptchaReadyCallback() {
+                if ( alexEL )   {
+                    grecaptcha.execute();
+                }
+            }  
+
+        </script>
+
+        <!-- End of the Google Recaptcha code -->
+EOF;
+        return $str;
+    }
 
     /**
      * jqueryShow function
