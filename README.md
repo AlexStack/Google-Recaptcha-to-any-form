@@ -59,7 +59,7 @@ GoogleRecaptcha::show($SiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb
   - '\$SiteKey': The Google Recaptcha Site Key of your website. You can directly put site key here or a variable or from database.
   - 'Form_ContactForm_Message': Form_Field_ID, via html code. eg. ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
   - 'no_debug': Change to debug and not tick the I'm not a robot checkbox will continue submit the form, then you will see the failed message.
-  - 'mt-4 mb-1': Extra css class name for the Google Recaptcha area.
+  - 'mt-4 mb-1': Extra css class name for the Google Recaptcha area. For recaptcha v2: Add theme-dark if you want the dark theme instead of the light. Add no-api-js if you already import the recaptcha/api.js.
   - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox. **Tips:** You can change this value to "v3", it will automatically switch to use Google Recaptcha v3
 - Default value of the parameters of the show() method
 
