@@ -93,7 +93,7 @@ class GoogleRecaptcha
     public static function show($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4", $please_tick_msg = "Please tick the I'm not robot checkbox")
     {
         if ( $please_tick_msg == 'v3'){
-            return Self::showV3($site_key, $after_field_id, $debug);
+            return Self::showV3($site_key, $after_field_id, $debug, $extra_class);
         }
         $debug_alert = ($debug == 'no_debug') ? 'false' : 'true';
         $str = <<<EOF
@@ -151,38 +151,60 @@ EOF;
      * @param string $please_tick_msg
      * @return void
      */
-    public static function showV3($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug')
+    public static function showV3($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4")
     {
         $debug_mode = ($debug == 'no_debug') ? '' : 'return false; // debug mode is on ';
+
+        if ( strpos($extra_class, 'show-inline-badge') !== false ){
+            $api_js = "https://www.google.com/recaptcha/api.js?render=explicit&onload=alexGetRecaptchaValue";
+            $recaptcha_client = "var recaptchaClient = grecaptcha.render('CustomContactUsForm-inline-badge', {
+                'sitekey': '$site_key',
+                'badge': 'inline',
+                'size': 'invisible'
+            });";
+        } else {
+            $api_js = "https://www.google.com/recaptcha/api.js?render=$site_key&onload=alexRecaptchaReadyCallback";
+            $recaptcha_client = "var recaptchaClient =  '$site_key';";
+        }
         $str = <<<EOF
         <!-- Start of the Google Recaptcha v3 code -->
  
-        <script src="https://www.google.com/recaptcha/api.js?render=$site_key"></script>
+        <script src="$api_js"></script>
 
 
         <script>
  
-            // Display google recaptcha
+            // Display google recaptcha v3
             var alexEL = document.getElementById('$after_field_id');
-            alexEL.parentNode.insertAdjacentHTML('afterend', '<input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
+            alexEL.parentNode.insertAdjacentHTML('afterend', '<div id="CustomContactUsForm-inline-badge" class="inline-badge-div $extra_class"></div><input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
 
             function alexGetRecaptchaValue(id) {
                 $debug_mode
-
+                if ( typeof(id)=='undefined' )  {
+                    id = 'CustomContactUsForm-recaptcha';
+                }
                 if ( document.getElementById(id).value == '' ) {
-                    grecaptcha.execute('$site_key', {action: 'CustomContactUsForm'}).then(function (token) {
-                        document.getElementById(id).value = token;
+
+                    $recaptcha_client
+
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute(recaptchaClient, {
+                            action: 'CustomContactUsForm'
+                        }).then(function (token) {
+                            document.getElementById(id).value = token;
+                        });
                     });
                 }
+
             }
 
             setTimeout('alexGetRecaptchaValue("CustomContactUsForm-recaptcha")', 10000);
  
-            grecaptcha.ready(function() {
+            function alexRecaptchaReadyCallback() {
                 alexEL.addEventListener('click',function(e){
                     alexGetRecaptchaValue("CustomContactUsForm-recaptcha");
                 });
-            });   
+            }  
 
         </script>
 

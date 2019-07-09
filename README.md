@@ -48,15 +48,15 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 - Put below php code in your frontend template/page for **Google Recaptcha v2**.
 
 ```php
-GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
+GoogleRecaptcha::show($SiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
 ```
 
 - Description for above code:
-  - '\$GoogleRecaptchaSiteKey': The Google Recaptcha Site Key of your website. You can directly put site key here or a variable or from database.
-  - 'Form_ContactForm_Message': Form_Field_ID, via html code: ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
+  - '\$SiteKey': The Google Recaptcha Site Key of your website. You can directly put site key here or a variable or from database.
+  - 'Form_ContactForm_Message': Form_Field_ID, via html code. eg. ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
   - 'no_debug': Change to debug and not tick the I'm not a robot checkbox will continue submit the form, then you will see the failed message.
   - 'mt-4 mb-1': Extra css class name for the Google Recaptcha area.
-  - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox. Tips: You can change this value to "v3", it will automatically switch to use Google Recaptcha v3
+  - 'Please tick the reCAPTCHA checkbox first': Frontend alert message if the end user does not tick the checkbox. **Tips:** You can change this value to "v3", it will automatically switch to use Google Recaptcha v3
 - Default value of the parameters of the show() method
 
 ```php
@@ -65,10 +65,13 @@ show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $e
 
 - Put below php code in your frontend template/page for **Google Recaptcha v3**
 ```php
-GoogleRecaptcha::showV3($GoogleRecaptchaSiteKey, 'Form_Field_ID', 'no_debug');
+GoogleRecaptcha::show($SiteKey, 'Form_Field_ID', 'no_debug','show-inline-badge mt-4 mb-3','v3');
+// or
+GoogleRecaptcha::showV3($SiteKey, 'Form_Field_ID', 'no_debug');
 ```
 - Our Google Recaptcha v3 will automatically get g-recaptcha-response value after the page load 10 seconds or the Form_Field_ID(eg. Form_ContactForm_Message) was clicked.
 - 'no_debug': Change to "debug" will always submit an empty g-recaptcha-response to the backend.
+- 'show-inline-badge mt-4 mb-3': Extra css class name for the Google Recaptcha inline-badge. Remove show-inline-badge will show a right bottom float Recaptcha badge instead inline-badge.
 - By default recaptcha v3 verify score < 0.5 as a failed result. You can set the score if you want a different value. eg.
 
 ```php
@@ -112,7 +115,7 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 
 ```php
 public function showGoogleRecaptcha()   {
-    return GoogleRecaptcha::show($GoogleRecaptchaSiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
+    return GoogleRecaptcha::show($SiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
 }
 ```
 
