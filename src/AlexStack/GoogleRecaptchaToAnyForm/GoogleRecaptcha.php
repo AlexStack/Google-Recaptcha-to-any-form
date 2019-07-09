@@ -16,11 +16,11 @@ class GoogleRecaptcha
      * @param [string] $break_msg, if set, pop up as an javascript alert and exit
      * @return true or false
      */
-    public static function verify($secret_key, $break_msg = null)
+    public static function verify($secret_key, $break_msg = null, $recaptcha_score = 0.5)
     {
         $valid = false;
         if (isset($_POST['g-recaptcha-response']) && strlen($_POST['g-recaptcha-response']) > 20) {
-            $valid = Self::result($secret_key, $_POST['g-recaptcha-response']);
+            $valid = Self::result($secret_key, $_POST['g-recaptcha-response'], $recaptcha_score);
         }
 
         if (!$valid && $break_msg) {
@@ -40,7 +40,7 @@ class GoogleRecaptcha
      * @param [type] $g_recaptcha_response
      * @return void
      */
-    public static function result($secret_key, $g_recaptcha_response)
+    public static function result($secret_key, $g_recaptcha_response, $recaptcha_score=0.5)
     {
         $google_recaptcha_uri = 'https://www.google.com/recaptcha/api/siteverify';
 
@@ -69,8 +69,11 @@ class GoogleRecaptcha
 
         $response = json_decode($rs);
 
+        //var_dump($response); exit();// un-comment for debug
+
         if (!$response || $response->success == false) {
-            //var_dump($response); // un-comment for debug
+            return false;
+        } else if ( isset($response->score) && $response->score < $recaptcha_score ) {
             return false;
         } else {
             return true;
@@ -89,9 +92,12 @@ class GoogleRecaptcha
      */
     public static function show($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4", $please_tick_msg = "Please tick the I'm not robot checkbox")
     {
+        if ( $please_tick_msg == 'v3'){
+            return Self::showV3($site_key, $after_field_id, $debug, $extra_class);
+        }
         $debug_alert = ($debug == 'no_debug') ? 'false' : 'true';
         $str = <<<EOF
-        <!-- Start of the Google Recaptcha code -->
+        <!-- Start of the Google Recaptcha v2 code -->
  
         <script src='https://www.google.com/recaptcha/api.js'></script>
         <script>
@@ -129,6 +135,79 @@ class GoogleRecaptcha
             });
  
         </script>
+        <!-- End of the Google Recaptcha code -->
+EOF;
+        return $str;
+    }
+
+
+    /**
+     * show recaptcha v3 function without jQuery
+     *
+     * @param string $site_key
+     * @param string $after_field_id
+     * @param string $debug
+     * @param string $extra_class
+     * @param string $please_tick_msg
+     * @return void
+     */
+    public static function showV3($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4")
+    {
+        $debug_mode = ($debug == 'no_debug') ? '' : 'return false; // debug mode is on ';
+
+        if ( strpos($extra_class, 'show-inline-badge') !== false ){
+            $api_js = "https://www.google.com/recaptcha/api.js?render=explicit&onload=alexGetRecaptchaValue";
+            $recaptcha_client = "var recaptchaClient = grecaptcha.render('CustomContactUsForm-inline-badge', {
+                'sitekey': '$site_key',
+                'badge': 'inline',
+                'size': 'invisible'
+            });";
+        } else {
+            $api_js = "https://www.google.com/recaptcha/api.js?render=$site_key&onload=alexRecaptchaReadyCallback";
+            $recaptcha_client = "var recaptchaClient =  '$site_key';";
+        }
+        $str = <<<EOF
+        <!-- Start of the Google Recaptcha v3 code -->
+ 
+        <script src="$api_js"></script>
+
+
+        <script>
+ 
+            // Display google recaptcha v3
+            var alexEL = document.getElementById('$after_field_id');
+            alexEL.parentNode.insertAdjacentHTML('afterend', '<div id="CustomContactUsForm-inline-badge" class="inline-badge-div $extra_class"></div><input type="hidden" id="CustomContactUsForm-recaptcha" name="g-recaptcha-response">');
+
+            function alexGetRecaptchaValue(id) {
+                $debug_mode
+                if ( typeof(id)=='undefined' )  {
+                    id = 'CustomContactUsForm-recaptcha';
+                }
+                if ( document.getElementById(id).value == '' ) {
+
+                    $recaptcha_client
+
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute(recaptchaClient, {
+                            action: 'CustomContactUsForm'
+                        }).then(function (token) {
+                            document.getElementById(id).value = token;
+                        });
+                    });
+                }
+
+            }
+
+            setTimeout('alexGetRecaptchaValue("CustomContactUsForm-recaptcha")', 10000);
+ 
+            function alexRecaptchaReadyCallback() {
+                alexEL.addEventListener('click',function(e){
+                    alexGetRecaptchaValue("CustomContactUsForm-recaptcha");
+                });
+            }  
+
+        </script>
+
         <!-- End of the Google Recaptcha code -->
 EOF;
         return $str;
