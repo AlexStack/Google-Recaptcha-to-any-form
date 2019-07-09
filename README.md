@@ -3,7 +3,7 @@
 [![License](https://poser.pugx.org/alexstack/google-recaptcha-to-any-form/license)](https://packagist.org/packages/alexstack/google-recaptcha-to-any-form)
 [![Total Downloads](https://poser.pugx.org/alexstack/google-recaptcha-to-any-form/downloads)](https://packagist.org/packages/alexstack/google-recaptcha-to-any-form)
 
-- It can display a Google Recaptcha v2 or v3 in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
+- It can display a Google Recaptcha v2 or v3 or invisible in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
 
 # Basic example codes
 
@@ -31,7 +31,7 @@ composer require alexstack/google-recaptcha-to-any-form
 
 # Contents
 
-- [x] [How to display it on frontend page](#frontend)
+- [x] [How to display it on frontend page](#frontend) - Support [Google recaptcha v3](#v3) / [v2](#frontend) / [Invisible](#invisible)
 - [x] [How to verify it in the backend script](#backend)
 - [x] [Usage example for SilverStripe 4.x/3.x](#silverstripe)
 - [x] [Usage example for Laravel](#laravel)
@@ -67,7 +67,14 @@ GoogleRecaptcha::show($SiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb
 show($site_key,$after_field_id='Form_ContactForm_Comment', $debug='no_debug', $extra_class="mt-4 mb-4", $please_tick_msg="Please tick the I'm not robot checkbox");
 ```
 
-- Put below php code in your frontend template/page for **Google Recaptcha v3**
+### <a name="invisible"></a>How to use **Google Recaptcha Invisible**
+- You need get Google Recaptcha Invisible site key and secret key first. It's different from v2
+- Based on above explain, add a sting **invisible** to the Extra css class will do the job. eg. mt-4 invisible mb-1
+```php
+GoogleRecaptcha::show($SiteKey, 'Form_Field_ID', 'no_debug','mb-2 invisible');
+```
+
+### <a name="v3"></a>Frontend example for **Google Recaptcha v3**
 ```php
 GoogleRecaptcha::show($SiteKey, 'Form_Field_ID', 'no_debug','show-inline-badge mt-4 mb-3','v3');
 // or
@@ -78,10 +85,12 @@ GoogleRecaptcha::showV3($SiteKey, 'Form_Field_ID', 'no_debug');
 - Our Google Recaptcha v3 will automatically get g-recaptcha-response value after the page load 10 seconds or the Form_Field_ID(eg. Form_ContactForm_Message) was clicked.
 - 'no_debug': Change to "debug" will always submit an empty g-recaptcha-response to the backend.
 - 'show-inline-badge mt-4 mb-3': Extra css class name for the Google Recaptcha inline-badge. Remove show-inline-badge will show a right bottom float Recaptcha badge instead inline-badge.
-![google-recaptcha-v3-inline](docs/images/google-recaptcha-v3-inline.png "google-recaptcha-v3-inline")
 
+![google-recaptcha-v3-inline](docs/images/google-recaptcha-v3-inline.png "google-recaptcha-v3-inline")
+- You need set up Google Recaptcha v3 site key and secret key first. It's different from v2
 
 - If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
+
 
 # <a name="backend"></a>How to verify it in the backend script
 
