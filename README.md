@@ -50,8 +50,9 @@ use GoogleRecaptchaToAnyForm\GoogleRecaptcha;
 ```php
 GoogleRecaptcha::show($SiteKey, 'Form_ContactForm_Message', 'no_debug', 'mt-4 mb-1', 'Please tick the reCAPTCHA checkbox first!');
 ```
+![google-recaptcha-v2-default](docs/images/google-recaptcha-v2-default.png "google-recaptcha-v2-default")
 
-- Description for above code:
+### Explain for above code:
   - '\$SiteKey': The Google Recaptcha Site Key of your website. You can directly put site key here or a variable or from database.
   - 'Form_ContactForm_Message': Form_Field_ID, via html code. eg. ... `<input type="text" id="Form_ContactForm_Message" />` ... Your Google Recaptcha will display after this form field.
   - 'no_debug': Change to debug and not tick the I'm not a robot checkbox will continue submit the form, then you will see the failed message.
@@ -69,9 +70,12 @@ GoogleRecaptcha::show($SiteKey, 'Form_Field_ID', 'no_debug','show-inline-badge m
 // or
 GoogleRecaptcha::showV3($SiteKey, 'Form_Field_ID', 'no_debug');
 ```
+![google-recaptcha-v3-default](docs/images/google-recaptcha-v3-default.png "google-recaptcha-v3-default")
+
 - Our Google Recaptcha v3 will automatically get g-recaptcha-response value after the page load 10 seconds or the Form_Field_ID(eg. Form_ContactForm_Message) was clicked.
 - 'no_debug': Change to "debug" will always submit an empty g-recaptcha-response to the backend.
 - 'show-inline-badge mt-4 mb-3': Extra css class name for the Google Recaptcha inline-badge. Remove show-inline-badge will show a right bottom float Recaptcha badge instead inline-badge.
+![google-recaptcha-v3-inline](docs/images/google-recaptcha-v3-inline.png "google-recaptcha-v3-inline")
 
 
 - If you do not want to use the show() method, You can also use your own code to display the recaptcha for a custom style. Just make sure the form action method is POST, then you can still use below verify() method in your backend script.
@@ -99,7 +103,7 @@ GoogleRecaptcha::verify($GoogleRecaptchaSecretKey, 'Google Recaptcha Validation 
 verify($secret_key, $break_msg = null, $recaptcha_score=0.5)
 ```
 
-- If you are using Google Recaptcha v3, By default it verify score < 0.5 as a failed result. You can set the score if you want a different value. eg.
+- If you are using Google Recaptcha v3, it verify score < 0.5 as a failed result by default. You can set the score if you want a different value. eg.
 
 ```php
 GoogleRecaptcha::verify($SecretKey, 'Google Recaptcha Validation Failed!!', 0.36);
