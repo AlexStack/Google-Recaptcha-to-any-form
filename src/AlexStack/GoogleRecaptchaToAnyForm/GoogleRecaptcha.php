@@ -100,11 +100,20 @@ class GoogleRecaptcha
             return Self::showInvisible($site_key, $after_field_id, $debug, $extra_class);
         }
 
+        $api_js_str = "<script src='https://www.google.com/recaptcha/api.js'></script>";
+        if ( strpos($extra_class, 'no-api-js') !== false  ){
+            $api_js_str = "";
+        }
+        $data_theme = 'light';
+        if ( strpos($extra_class, 'theme-dark') !== false  ){
+            $data_theme = "dark";
+        }
+
         $debug_alert = ($debug == 'no_debug') ? 'false' : 'true';
         $str = <<<EOF
         <!-- Start of the Google Recaptcha v2 code -->
  
-        <script src='https://www.google.com/recaptcha/api.js'></script>
+        $api_js_str
         <script>
  
             // Display google recaptcha
@@ -123,7 +132,7 @@ class GoogleRecaptcha
 
             var alexEL = document.getElementById('$after_field_id');
             if ( alexEL )   {
-                alexEL.parentNode.insertAdjacentHTML('afterend', '<div class="g-recaptcha $extra_class" data-sitekey="$site_key"></div>');
+                alexEL.parentNode.insertAdjacentHTML('afterend', '<div class="g-recaptcha $extra_class" data-sitekey="$site_key" data-theme="$data_theme"></div>');
 
                 // Validate google recaptcha before submit the form
                 alexFindClosestNode(alexEL,'form').addEventListener('submit',function(e){
