@@ -3,7 +3,7 @@
 [![License](https://poser.pugx.org/alexstack/google-recaptcha-to-any-form/license)](https://packagist.org/packages/alexstack/google-recaptcha-to-any-form)
 [![Total Downloads](https://poser.pugx.org/alexstack/google-recaptcha-to-any-form/downloads)](https://packagist.org/packages/alexstack/google-recaptcha-to-any-form)
 
-- It can display a Google Recaptcha v2 or v3 or invisible in any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS.
+- Add a Google Recaptcha v2 or v3 or invisible to any custom form with flexible settings and no affection to your existing code. Also works well for SilverStripe 4.x/3.x/2.x & Larave & Wordpress & other CMS. No need jQuery.
 
 # Basic example codes
 
