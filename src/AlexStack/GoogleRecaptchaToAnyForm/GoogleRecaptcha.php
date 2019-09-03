@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by Alex Zeng
  * 2019-06-25
@@ -40,7 +41,7 @@ class GoogleRecaptcha
      * @param [type] $g_recaptcha_response
      * @return void
      */
-    public static function result($secret_key, $g_recaptcha_response, $recaptcha_score=0.5)
+    public static function result($secret_key, $g_recaptcha_response, $recaptcha_score = 0.5)
     {
         $google_recaptcha_uri = 'https://www.google.com/recaptcha/api/siteverify';
 
@@ -53,6 +54,7 @@ class GoogleRecaptcha
             curl_setopt_array($curl, [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST => true,
+                CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_URL => $google_recaptcha_uri,
                 CURLOPT_POSTFIELDS => [
                     'secret' => $secret_key,
@@ -73,7 +75,7 @@ class GoogleRecaptcha
 
         if (!$response || $response->success == false) {
             return false;
-        } else if ( isset($response->score) && $response->score < $recaptcha_score ) {
+        } else if (isset($response->score) && $response->score < $recaptcha_score) {
             return false;
         } else {
             return true;
@@ -92,20 +94,20 @@ class GoogleRecaptcha
      */
     public static function show($site_key, $after_field_id = 'Form_ContactForm_Comment', $debug = 'no_debug', $extra_class = "mt-4 mb-4", $please_tick_msg = "Please tick the I'm not robot checkbox")
     {
-        if ( $please_tick_msg == 'v3'){
+        if ($please_tick_msg == 'v3') {
             return Self::showV3($site_key, $after_field_id, $debug, $extra_class);
         }
 
-        if ( strpos($extra_class, 'invisible') !== false  ){
+        if (strpos($extra_class, 'invisible') !== false) {
             return Self::showInvisible($site_key, $after_field_id, $debug, $extra_class);
         }
 
         $api_js_str = "<script src='https://www.google.com/recaptcha/api.js'></script>";
-        if ( strpos($extra_class, 'no-api-js') !== false  ){
+        if (strpos($extra_class, 'no-api-js') !== false) {
             $api_js_str = "";
         }
         $data_theme = 'light';
-        if ( strpos($extra_class, 'theme-dark') !== false  ){
+        if (strpos($extra_class, 'theme-dark') !== false) {
             $data_theme = "dark";
         }
 
@@ -170,7 +172,7 @@ EOF;
     {
         $debug_mode = ($debug == 'no_debug') ? '' : 'return false; // debug mode is on ';
 
-        if ( strpos($extra_class, 'show-inline-badge') !== false ){
+        if (strpos($extra_class, 'show-inline-badge') !== false) {
             $api_js = "https://www.google.com/recaptcha/api.js?render=explicit&onload=alexGetRecaptchaValue";
             $recaptcha_client = "var recaptchaClient = grecaptcha.render('CustomContactUsForm-inline-badge', {
                 'sitekey': '$site_key',
